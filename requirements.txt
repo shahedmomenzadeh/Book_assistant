@@ -1,0 +1,26 @@
+numpy
+
+# FastAPI & Web Server
+fastapi
+uvicorn[standard]
+
+# Streamlit for Frontend
+streamlit
+
+# LangChain & Vector Stores
+langchain
+langgraph
+faiss-cpu
+langchain_community
+langchain_openai
+langchain-google-genai
+
+
+# PDF processing
+pypdf
+
+# Environment variables
+python-dotenv
+
+# For search functionality
+tavily-python
