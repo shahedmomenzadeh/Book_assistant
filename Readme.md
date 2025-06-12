@@ -34,8 +34,8 @@ Follow these steps carefully to set up and run the project on your local machine
 Open your terminal and clone the GitHub repository to your local machine.
 
 ```bash
-git clone https://github.com/shahedmomenzadeh/Book\_assistant.git  
-cd Book\_assistant
+git clone https://github.com/shahedmomenzadeh/Book_assistant.git  
+cd Book_assistant
 ```
 
 ### **3\. Create a Virtual Environment**
@@ -44,12 +44,12 @@ It is highly recommended to use a virtual environment to manage project dependen
 
 **On macOS / Linux:**
 ```bash
-python3 \-m venv venv  
+python3 -m venv venv  
 source venv/bin/activate
 ```
 **On Windows:**
 ```bash
-python \-m venv venv  
+python -m venv venv  
 .\\venv\\Scripts\\activate
 ```
 
@@ -62,17 +62,17 @@ Your API keys should be kept secret and should not be committed to version contr
 **b.** Add your secret keys to the .env file in the following format:
 ```
 \# Get your key from Google AI Studio: https://aistudio.google.com/app/apikey  
-GOOGLE\_API\_KEY="your\_google\_api\_key\_here"
+GOOGLE_API_KEY="your_google_api_key_here"
 
 \# Get your key from Serper.dev  
-SERPER\_API\_KEY="your\_serper\_api\_key\_here"
+SERPER_API_KEY="your_serper_api_key_here"
 ```
 
 ### **5\. Install Dependencies**
 
 Install all the required Python packages using the requirements.txt file.
 ```bash
-pip install \-r requirements.txt
+pip install -r requirements.txt
 ```
 
 ## **▶️ Running the Application**
@@ -83,7 +83,7 @@ To run the application, you need to start the backend and frontend servers in tw
 
 If you have any PDF books you want to be available from the start, place them inside the data/ directory. Then, run the ingestion script from the project root:
 ```bash
-python scripts/ingest\_book.py
+python scripts/ingest_book.py
 ```
 
 This will process all books in the data folder. You can also upload books later through the user interface.
@@ -92,7 +92,7 @@ This will process all books in the data folder. You can also upload books later 
 
 In your first terminal (with the virtual environment activated), start the FastAPI server.
 ```bash
-uvicorn src.backend.main:app \--reload \--port 8000
+uvicorn src.backend.main:app --reload --port 8000
 ```
 
 You should see output indicating that the Uvicorn server is running. The backend is now live at http://localhost:8000.
@@ -116,7 +116,7 @@ You can now use the application:
 
 ## **📂 Project Structure**
 
-Book\_assistant/  
+Book_assistant/  
 │  
 ├── .env                  \# Stores secret API keys (you must create this)  
 ├── .gitignore            \# Specifies files for Git to ignore  
