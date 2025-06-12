@@ -9,6 +9,7 @@ This is a full-stack application that allows users to chat with their programmin
 * **Persistent Chat History**: Saves conversation history for each book session in a local SQLite database, so you can pick up where you left off, even after restarting the app.  
 * **Dynamic Book Management**: Users can upload new PDF books directly through the web interface. The application automatically processes and vectorizes them, making them instantly available for study sessions.  
 * **Live Web Search**: If a question cannot be answered by the book or the model's internal knowledge, the agent can perform a real-time web search using the Serper API.
+![image](https://github.com/user-attachments/assets/e6dd5766-1147-40c1-8416-2def7dbe3c1e)
 
 ## **⚙️ System Architecture**
 
