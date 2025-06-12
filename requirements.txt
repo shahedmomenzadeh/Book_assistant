@@ -1,26 +1,38 @@
-numpy
-
-# FastAPI & Web Server
+# --- Core Web Frameworks ---
+# For the backend API and frontend UI
 fastapi
-uvicorn[standard]
-
-# Streamlit for Frontend
+uvicorn
 streamlit
+requests
 
-# LangChain & Vector Stores
+# --- LangChain & Agentic Workflow ---
+# Core libraries for building the agent
 langchain
 langgraph
-faiss-cpu
-langchain_community
-langchain_openai
+langchain-core
+
+# --- LLMs and Embeddings ---
+# For connecting to Google's Gemini and embedding models
 langchain-google-genai
 
+# --- Tools and Community Integrations ---
+# For the web search tool and other community components
+langchain-community
+google-search-results # Required by the Serper tool
 
-# PDF processing
+# --- Vector Store & Data Ingestion (RAG) ---
+# For creating the vector store from PDFs
+faiss-cpu
 pypdf
+tiktoken # Used for text tokenization
 
-# Environment variables
+# --- Configuration & Utilities ---
+# For loading environment variables and managing settings
 python-dotenv
+pydantic-settings
 
-# For search functionality
-tavily-python
+# --- Development & Visualization (for Notebooks) ---
+# Optional, but needed to run the testing and visualization notebooks
+jupyter
+ipython
+pygraphviz
