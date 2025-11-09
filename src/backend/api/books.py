@@ -65,13 +65,19 @@ async def upload_book(file: UploadFile = File(...)):
 async def list_books():
     """
     Returns a list of available books by scanning the vector_store directory.
+    A directory is considered a valid book if it contains an 'index.faiss' file.
     This allows the frontend to dynamically update the list of available books.
     """
     if not os.path.exists(VECTOR_STORE_DIR):
         return JSONResponse(content={"books": []})
     
     try:
-        available_books = [d for d in os.listdir(VECTOR_STORE_DIR) if os.path.isdir(os.path.join(VECTOR_STORE_DIR, d))]
+        available_books = []
+        for d in os.listdir(VECTOR_STORE_DIR):
+            book_path = os.path.join(VECTOR_STORE_DIR, d)
+            # A book is only valid if it's a directory AND contains the FAISS index file
+            if os.path.isdir(book_path) and os.path.exists(os.path.join(book_path, "index.faiss")):
+                available_books.append(d)
         return JSONResponse(content={"books": available_books})
     except OSError as e:
         raise HTTPException(status_code=500, detail=f"Could not read book directory: {e}")
