@@ -1,4 +1,5 @@
 import os
+import shutil
 import sys
 import argparse
 from dotenv import load_dotenv
@@ -31,31 +32,41 @@ def create_vector_db_for_book(file_path: str, book_id: str):
         print(f"Error: File not found at {file_path}")
         return
 
-    loader = PyPDFLoader(file_path=file_path)
-    documents = loader.load()
-    print(f"-> Loaded {len(documents)} pages.")
-    
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
-    docs = text_splitter.split_documents(documents)
-    print(f"-> Split into {len(docs)} chunks.")
+    try:
+        loader = PyPDFLoader(file_path=file_path)
+        documents = loader.load()
+        print(f"-> Loaded {len(documents)} pages.")
 
-    for doc in docs:
-        doc.page_content = doc.page_content.encode('utf-8', 'ignore').decode('utf-8')
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+        docs = text_splitter.split_documents(documents)
+        print(f"-> Split into {len(docs)} chunks.")
 
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-    
-    print("-> Creating FAISS index...")
-    db = FAISS.from_documents(docs, embeddings)
-    
-    book_vector_store_path = os.path.join(VECTOR_STORE_DIR, book_id)
-    
-    # --- FIX ---
-    # Create the book-specific directory if it does not exist.
-    os.makedirs(book_vector_store_path, exist_ok=True)
-    
-    # Now, save the index.
-    db.save_local(book_vector_store_path)
-    print(f"-> FAISS index saved to: {book_vector_store_path}")
+        for doc in docs:
+            doc.page_content = doc.page_content.encode('utf-8', 'ignore').decode('utf-8')
+
+        embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+
+        print("-> Creating FAISS index...")
+        db = FAISS.from_documents(docs, embeddings)
+
+        # --- ATOMIC SAVE ---
+        # 1. Save to a temporary directory
+        temp_dir = os.path.join(VECTOR_STORE_DIR, f"temp_{book_id}_{os.getpid()}")
+        db.save_local(temp_dir)
+
+        # 2. Rename the directory to the final name
+        final_dir = os.path.join(VECTOR_STORE_DIR, book_id)
+        if os.path.exists(final_dir):
+            shutil.rmtree(final_dir) # Remove old version if it exists
+        os.rename(temp_dir, final_dir)
+
+        print(f"-> FAISS index saved to: {final_dir}")
+
+    except Exception as e:
+        print(f"!!-> Failed to process {book_id}. Error: {e}")
+        # Clean up temporary directory if it exists
+        if 'temp_dir' in locals() and os.path.exists(temp_dir):
+            shutil.rmtree(temp_dir)
 
 def run_ingestion_pipeline(target_file: str = None):
     """
